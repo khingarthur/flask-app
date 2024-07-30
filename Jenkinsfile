@@ -36,7 +36,7 @@ pipeline {
         }
         stage("Login into dockerhub") {
             steps {
-                sh "echo $Docker_pat_PSW | docker login -u $Docker_pat_USR --password-stdin"
+                sh "echo \$Docker_pat_PSW | docker login -u \$Docker_pat_USR --password-stdin"
             }
         }
 //        stage("docker tag") {
