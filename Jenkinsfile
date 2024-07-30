@@ -14,12 +14,6 @@ pipeline {
 
 	
     stages {
-	stage("Clean") {
-		steps { 
-			sh "docker rm -f $(docker ps -aq)"
-			sh "docker rmi -f $(docker images -q)"
-			
-} }
         stage("SCM checkout") {
             steps {
                 checkout scmGit(branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/khingarthur/flask-app.git']])
