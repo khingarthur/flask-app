@@ -1,35 +1,55 @@
-pipeline {
-    agent any 
+Pipeline {
+    agent any
 
-     options {
-        timeout(time: 10, unit: 'MINUTES')
-     }
     environment {
-    DOCKERHUB_CREDENTIALS = credentials('karo-dockerhub')
-    APP_NAME = "ooghenekaro/myflaskapp"
+        name = "firstapp"
+        imageName = "flaskapp"
+        version = "1.0.${env.BUILD_NUMBER}"
+        containerPort = "5000"
+        systemPort = "5000"
+        registryName = "khingarthur"
+        imageUrl = "${registryName}/${imageName}"
+        Docker_pat = credentials("Dockerhub-pat2") // Jenkins credentials ID for Docker registry
     }
-    stages { 
-        stage('SCM Checkout') {
-            steps{
-           git branch: 'main', url: 'https://github.com/ooghenekaro/flask-app.git'
-            }
-        }
 
-        stage('Build docker image') {
-            steps {  
-                sh 'docker build -t $APP_NAME:v1.RELEASE .'
+
+    stages {
+        stage("SCM checkout") {
+            steps {
+                checkout scmGit(branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/khingarthur/flask-app.git']])
             }
         }
-        stage('login to dockerhub') {
-            steps{
-               sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
+        stage("list repository content") {
+            steps {
+                sh "ls -ll"
             }
         }
-        stage('push image') {
-            steps{
-                sh 'docker push $APP_NAME:v1.RELEASE'
+        stage("Build the docker image") {
+            steps {
+                sh "docker build -t $imageName:$version ."
             }
-        }    
+        }
+        stage("Run a container from the image") {
+            steps {
+                sh "docker run -itd -p $systemPor:$containerPort --name $name $imageName:$version"
+            }
+        }
+        stage("Login into dockerhub") {
+            steps {
+                sh "echo $Docker_pat_PSW | docker login -u $Docker_pat_USR --password-stdin"
+            }
+        }
+        stage("docker tag") {
+            steps{
+                sh " docke tag $imageName $imageUrl:$version"
+            }
+        }
+        stage("Push the image to dockerhub ") {
+            step{
+                sh "docker push $imageUrl:$version"
+            }
+        }
     }
+
+
 }
-
