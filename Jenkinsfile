@@ -36,8 +36,8 @@ pipeline {
         }
         stage("Login into dockerhub") {
             steps {
-		 withEnv(['DOCKERHUB_PAT=' + credentials('Dockerhub-pat2')]) {
-            sh 'echo $DOCKERHUB_PAT | docker login -u khingarthur --password-stdin'
+		withCredentials([string(credentialsId: "Dockerhub-pat2", variable: "DOCKERHUB_PAT")]) {
+            sh "docker login -u khingarthur --password-stdin <<< ${DOCKERHUB_PAT}"
 		}
        	 }
 	}
