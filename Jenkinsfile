@@ -29,11 +29,11 @@ pipeline {
                 sh "docker build -t $imageName:$version ."
             } 
       }
-//        stage("Run a container from the image") {
-//            steps {
- //               sh "docker run -itd -p $systemPort:$containerPort --name $name $imageName:$version"
-////            }
-//        }
+        stage("Run a container from the image") {
+            steps {
+               sh "docker run -itd -p $systemPort:$containerPort --name $name $imageName:$version"
+            }
+        }
 //        stage("Login into dockerhub") {
 //            steps {
 //                sh "echo $Docker_pat_PSW | docker login -u $Docker_pat_USR --password-stdin"
