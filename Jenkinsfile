@@ -37,7 +37,7 @@ pipeline {
         stage("Login into dockerhub") {
             steps {
 		withCredentials([string(credentialsId: 'Dockerhub-pat', variable: 'Docker-pat')]) {
-		sh "echo \$DOCKER_PAT | docker login -u $registryName --password-stdin""
+		sh "echo \$DOCKER_PAT | docker login -u $registryName --password-stdin"
 		}
 		}
         }
