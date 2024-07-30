@@ -38,7 +38,7 @@ pipeline {
         stage("Login into dockerhub") {
             steps {
 		withEnv(['DOCKERHUB_PAT=${DOCKERHUB_PAT}']) {
-    			sh "echo ${DOCKERHUB_PAT} | docker login -u your_docker_hub_username --password-stdin"
+    			sh "echo ${DOCKERHUB_PAT} | docker login -u khingarthur --password-stdin"
 		}
        	 }
 	}
