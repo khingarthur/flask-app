@@ -9,7 +9,6 @@ pipeline {
         systemPort = "5000"
         registryName = "khingarthur"
         imageUrl = "${registryName}/${imageName}"
-	DOCKERHUB_PAT = credentials('Dockerhub-pat2')
         
     }
 
@@ -37,8 +36,7 @@ pipeline {
         }
         stage("Login into dockerhub") {
             steps {
-		withEnv(['DOCKERHUB_PAT=${DOCKERHUB_PAT}']) {
-    			sh "echo ${DOCKERHUB_PAT} | docker login -u khingarthur --password-stdin"
+		sh "docker login -u ${registryName} -p $Docker_pat"
 		}
        	 }
 	}
