@@ -40,12 +40,12 @@ pipeline {
             }
         }
         stage("docker tag") {
-            steps{
+            steps {
                 sh " docke tag $imageName $imageUrl:$version"
-            }
+            } 
         }
         stage("Push the image to dockerhub ") {
-            step{
+            steps {
                 sh "docker push $imageUrl:$version"
             }
         }
