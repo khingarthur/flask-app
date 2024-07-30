@@ -24,11 +24,11 @@ pipeline {
                 sh "ls -ll"
             }
         } 
-        //stage("Build the docker image") {
-//            steps {
-//                sh "docker build -t $imageName:$version ."
-//            } 
-//      }
+        stage("Build the docker image") {
+            steps {
+                sh "docker build -t $imageName:$version ."
+            } 
+      }
 //        stage("Run a container from the image") {
 //            steps {
  //               sh "docker run -itd -p $systemPort:$containerPort --name $name $imageName:$version"
