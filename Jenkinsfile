@@ -9,7 +9,7 @@ pipeline {
         systemPort = "5000"
         registryName = "khingarthur"
         imageUrl = "${registryName}/${imageName}"
-        Docker_pat = credentials("Dockerhub-pat2") // Jenkins credentials ID for Docker registry
+        DOCKERHUB_CREDENTIALS = credentials("Dockerhub-pat2") // Jenkins credentials ID for Docker registry
     }
 
 	
@@ -36,9 +36,7 @@ pipeline {
         }
         stage("Login into dockerhub") {
             steps {
-		withCredentials([string(credentialsId: 'Dockerhub-pat', variable: 'DOCKER_PAT')]) {
-		sh "echo \$DOCKER_PAT | docker login -u $registryName --password-stdin"
-		}
+		sh "echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin"
 		}
         }
 //        stage("docker tag") {
