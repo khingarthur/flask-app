@@ -9,7 +9,7 @@ pipeline {
         systemPort = "5000"
         registryName = "khingarthur"
         imageUrl = "${registryName}/${imageName}"
-        
+        Docker_pat = "Dockerhub-pat2"
     }
 
 	
