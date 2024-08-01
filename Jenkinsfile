@@ -24,20 +24,20 @@ pipeline {
                 sh "ls -ll"
             }
         } 
-        stage("Build the docker image") {
-            steps {
-                sh "docker build -t $imageName:$version ."
-            } 
-      }
-        stage("Run a container from the image") {
-            steps {
-               sh "docker run -itd -p $systemPort:$containerPort --name $name $imageName:$version"
-            }
-        }
+        //stage("Build the docker image") {
+          //  steps {
+            //    sh "docker build -t $imageName:$version ."
+            //} 
+//      }
+  //      stage("Run a container from the image") {
+   //         steps {
+     //          sh "docker run -itd -p $systemPort:$containerPort --name $name $imageName:$version"
+       //     }
+        //}
         stage("Login into dockerhub") {
             steps {
 		withCredentials([string(credentialsId: "Dockerhub-pat2", variable: "DOCKERHUB_PAT")]) {
-            sh "docker login -u khingarthur --password-stdin <<< ${DOCKERHUB_PAT}"
+            sh "echo $DOCKERHUB_PAT | docker login -u khingarthur --password-stdin"
 		}
        	 }
 	}
